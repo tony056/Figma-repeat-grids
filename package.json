@@ -7,7 +7,7 @@
     "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "parcel watch src/js/main.js -d src/build/ -o main.js",
-    "build": "parcel build src/js/main.js -d src/build/ -o main.js"
+    "build": "parcel build src/js/api/PlugIn.js -d src/build/ -o plugin.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
@@ -16,6 +16,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "i": "^0.3.6",
+    "lodash": "^4.17.10",
     "npm": "^6.4.1",
     "parcel-bundler": "^1.6.2",
     "prop-types": "^15.6.2",

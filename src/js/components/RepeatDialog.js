@@ -10,7 +10,37 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    backgroundColor: '#282c31',
+    color: 'white',
   },
+};
+
+const inputStyle = {
+  borderRadius: '4px',
+  display: 'inline-block',
+  background: '#070809',
+  border: '1px solid #5D646c',
+  width: '25%',
+  height: '22px',
+  color: 'white',
+  textAlign: 'left',
+};
+
+const listStyle = {
+  width: '80%',
+  height: '25px',
+  margin: '10px',
+  display: 'flex',
+  justifyContent: 'space-between',
+};
+
+const buttonStyle = {
+  width: '84px',
+  height: '24px',
+  background: '#006EFF',
+  borderRadius: '4px',
+  color: 'white',
+  margin: '10px',
 };
 
 
@@ -60,23 +90,24 @@ export default class RepeatDialog extends React.Component {
         style={customStyles}
         contentLabel="Repeat grids dialog"
       >
+        <span style={{ margin: '10px', fontSize: '20px' }}>Create a table of the selected layer:</span>
         <ul>
-          <li>
+          <li style={listStyle}>
             <span>Columns: </span>
-            <input type="text" id="cols" value={cols} onChange={this.onValueChange} />
+            <input style={inputStyle} type="text" id="cols" value={cols} onChange={this.onValueChange} />
           </li>
-          <li>
+          <li style={listStyle}>
             <span>Rows: </span>
-            <input type="text" id="rows" value={rows} onChange={this.onValueChange} />
+            <input style={inputStyle} type="text" id="rows" value={rows} onChange={this.onValueChange} />
           </li>
-          <li>
+          <li style={listStyle}>
             <span>Spacing: </span>
-            <input type="text" id="spacing" value={spacing} onChange={this.onValueChange} />
+            <input style={inputStyle} type="text" id="spacing" value={spacing} onChange={this.onValueChange} />
           </li>
         </ul>
         <div>
-          <button type="button" onClick={onRequestClose}>Cancel</button>
-          <button type="button" onClick={this.startDuplicate}>Duplicate</button>
+          <button style={buttonStyle} type="button" onClick={onRequestClose}>Cancel</button>
+          <button style={buttonStyle} type="button" onClick={this.startDuplicate}>Create</button>
         </div>
       </Modal>
     );

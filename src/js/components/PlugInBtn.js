@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +26,11 @@ export default class PlugInBtn extends React.Component {
 
   openModal() {
     // make sure there's a selected layer
+    const selectedLayer = window.pluginInstance.getSelectedLayer();
+    if (!selectedLayer) {
+      console.log('no selected');
+      return;
+    }
     this.setState({ isModalOpen: true });
   }
 
