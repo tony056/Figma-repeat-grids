@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
@@ -52,7 +53,7 @@ export default class RepeatDialog extends React.Component {
       cols: 1,
       spacing: 10,
     };
-    // this.startDuplicate = this.closeDialog.bind(this);
+    this.startDuplicate = this.startDuplicate.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
   }
 
@@ -74,7 +75,9 @@ export default class RepeatDialog extends React.Component {
   }
 
   startDuplicate() {
-    return null;
+    window.pluginInstance.duplicateLayers();
+    const { onRequestClose } = this.props;
+    onRequestClose();
   }
 
 

@@ -63,6 +63,11 @@ class PlugIn {
     console.log('we have something');
     return this.figma.getSelectedLayer();
   }
+
+  duplicateLayers() {
+    if (!this.figma) return;
+    this.figma.duplicateLayers(1, 1, 10);
+  }
 }
 
 const pluginInstance = new PlugIn();
