@@ -17,70 +17,48 @@ class Figma {
     if (isEmpty(sceneGraphSelection)) return null;
 
     const selectedLayerIds = Object.keys(sceneGraphSelection);
-    if (selectedLayerIds.length > 1) {
-      // too many selected layers for now
-      console.log('too many selected layers');
-    }
+    if (selectedLayerIds.length > 1) return null;
 
     const id = selectedLayerIds[0];
     return this.App._state.mirror.sceneGraph.get(id);
   }
 
   duplicateLayers(rows, cols, spacing) {
-    // const n = rows * cols;
-    // let currentLayer = selected;
-    // let counter = 1;
-    // while (counter < n) {
-    //   // duplicate
-    //   // set property of the current selected (which is the latest duplicate one)
-    // }
-    const { parent } = this.getSelectedLayer();
-    this.App.sendMessage('duplicateSelection', { newParentId: parent });
-    const { sceneGraphSelection } = this.App._state.mirror;
-    if (isEmpty(sceneGraphSelection)) return;
-    console.log('new selected');
-    const selectedLayerIds = Object.keys(sceneGraphSelection);
-    if (selectedLayerIds.length > 1) {
-      // too many selected layers for now
-      console.log('too many selected layers');
-    }
-    const id = selectedLayerIds[0];
-    // const bounds = this.App.sendMessage('getBoundsForNodes', { nodeIds: [id] }).args;
-    this.setNodeProperty(id, 'name', 'test');
-    this.App.sendMessage('clearSelection');
-    this.App.sendMessage('addToSelection', { nodeIds: [id] });
-    // const {
-    //   width, height, x, y,
-    // } = bounds[id];
-
+    const n = rows * cols;
+    let counter = 1;
+    const currentLayer = this.getSelectedLayer();
+    const { name } = currentLayer;
     const {
       x, y, width, height,
     } = this.App._state.mirror.selectionProperties;
-    console.log(`name: ${id}, w: ${width}, h: ${height}, x: ${x}, y: ${y}`);
-    this.setLayerPos(id, x + width + spacing, y, width, height);
+
+    while (counter < n) {
+      // duplicate
+      const { parent } = currentLayer;
+      this.App.sendMessage('duplicateSelection', { newParentId: parent });
+      const newId = this.focusOnNewSelectedLayer();
+      this.setNodeProperty(newId, 'name', `${name}_${counter}`);
+
+      const r = Math.floor(counter / cols);
+      const c = counter % cols;
+      const newX = x + (width + spacing) * c;
+      const newY = y + (height + spacing) * r;
+      this.App.updateSelectionProperties({ x: newX, y: newY });
+      counter += 1;
+    }
   }
 
-  // getLayerInfo(id) {
-  //   const currentPageId = this.App._state.mirror.appModel.currentPage;
-  //   const { pageList } = this.App._state.mirror.appModel;
-  //   const bounds = this.App.sendMessage('getBoundsForNodes', { nodeIds: [id] }).args;
-  //
-  //   return {
-  //     id: id,
-  //     name: ,
-  //     width: bounds[id].width,
-  //     height: bounds[id].height,
-  //     position: ,
-  //     pageName: ,
-  //     parentName: ,
-  //     x: bounds[id].x,
-  //     y: bounds[id].y,
-  //     type:
-  //   };
-  // }
+  focusOnNewSelectedLayer() {
+    const { sceneGraphSelection } = this.App._state.mirror;
+    if (isEmpty(sceneGraphSelection)) return null;
+    const selectedLayerIds = Object.keys(sceneGraphSelection);
+    if (selectedLayerIds.length > 1) return null;
+    const id = selectedLayerIds[0];
 
-  setLayerPos(id, x, y) {
-    this.App.updateSelectionProperties({ x, y });
+    this.App.sendMessage('clearSelection');
+    this.App.sendMessage('addToSelection', { nodeIds: [id] });
+
+    return id;
   }
 
   setNodeProperty(nodeId, property, value) {

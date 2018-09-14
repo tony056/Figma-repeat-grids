@@ -28,7 +28,6 @@ export default class PlugInBtn extends React.Component {
     // make sure there's a selected layer
     const selectedLayer = window.pluginInstance.getSelectedLayer();
     if (!selectedLayer) {
-      console.log('no selected');
       return;
     }
     this.setState({ isModalOpen: true });

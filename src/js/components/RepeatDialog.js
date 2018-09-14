@@ -75,7 +75,8 @@ export default class RepeatDialog extends React.Component {
   }
 
   startDuplicate() {
-    window.pluginInstance.duplicateLayers();
+    const { rows, cols, spacing } = this.state;
+    window.pluginInstance.duplicateLayers(rows, cols, spacing);
     const { onRequestClose } = this.props;
     onRequestClose();
   }
