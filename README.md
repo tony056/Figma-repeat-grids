@@ -3,7 +3,7 @@
 
 ## Demo
 The following is the short clip demonstrating how to use this plugin after you install it.
-![](https://media.giphy.com/media/31WYOo6jZ8seUeeBqd/giphy.gif)
+![](https://media.giphy.com/media/C8aaPkvOSiH0zO2HXq/giphy.gif)
 
 ## Extension download links
 [Chrome web store](https://chrome.google.com/webstore/detail/ahcbjieaobebolmpfjecbkflllkccohe/)
