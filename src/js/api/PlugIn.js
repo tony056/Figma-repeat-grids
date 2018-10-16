@@ -8,7 +8,7 @@ import Figma from './Figma';
 import PlugInBtn from '../components/PlugInBtn';
 import HotKeyDialog from '../components/HotkeyDialog';
 
-const screenNode = document.getElementsByClassName('fullscreen_view--page--1QuyL')[0];
+const screenNode = document.getElementById('react-page');
 const config = { attributes: true, childList: true, subtree: true };
 
 const injectApp = () => {
@@ -78,8 +78,10 @@ class PlugIn {
   }
 }
 
-const figmaInstance = new Figma();
-window.figmaInstance = figmaInstance;
-const pluginInstance = new PlugIn();
-window.pluginInstance = pluginInstance;
-window.pluginInstance.run();
+window.onload = () => {
+  const figmaInstance = new Figma();
+  window.figmaInstance = figmaInstance;
+  const pluginInstance = new PlugIn();
+  window.pluginInstance = pluginInstance;
+  window.pluginInstance.run();
+};
