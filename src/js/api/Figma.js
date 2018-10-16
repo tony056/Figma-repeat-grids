@@ -23,7 +23,7 @@ class Figma {
     return this.App._state.mirror.sceneGraph.get(id);
   }
 
-  duplicateLayers(rows, cols, spacing) {
+  duplicateLayers(rows, cols, hspacing, vspacing) {
     const n = rows * cols;
     let counter = 1;
     const currentLayer = this.getSelectedLayer();
@@ -41,8 +41,8 @@ class Figma {
 
       const r = Math.floor(counter / cols);
       const c = counter % cols;
-      const newX = x + (width + spacing) * c;
-      const newY = y + (height + spacing) * r;
+      const newX = x + (width + parseInt(hspacing, 10)) * c;
+      const newY = y + (height + parseInt(vspacing, 10)) * r;
       this.App.updateSelectionProperties({ x: newX, y: newY });
       counter += 1;
     }

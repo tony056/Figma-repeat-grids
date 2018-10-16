@@ -6,35 +6,43 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Figma from './Figma';
 import PlugInBtn from '../components/PlugInBtn';
+import HotKeyDialog from '../components/HotkeyDialog';
 
 const screenNode = document.getElementsByClassName('fullscreen_view--page--1QuyL')[0];
 const config = { attributes: true, childList: true, subtree: true };
-let isChecked = false;
 
 const injectApp = () => {
   if (document.getElementById('fig-repeat-grids')) return;
   const newDiv = document.createElement('div');
   newDiv.setAttribute('id', 'fig-repeat-grids');
-  newDiv.classList.add('toolbar_view--toolButtonContainer--1HAfB');
-  const toolbar = document.getElementsByClassName('toolbar_view--buttonGroup--2wM3n')[0];
-  if (!toolbar) return;
-  toolbar.appendChild(newDiv);
-  isChecked = true;
+  const contextMenu = document.getElementsByClassName('dropdown--dropdown--35dH4 pointing_dropdown--content--2os_K')[0];
+  if (!contextMenu) return;
+  contextMenu.appendChild(newDiv);
   ReactDOM.render(<PlugInBtn />, newDiv);
+};
+
+const insertModalPanel = () => {
+  if (!document.getElementById('dialog-container')) {
+    const newDiv = document.createElement('div');
+    newDiv.setAttribute('id', 'dialog-container');
+    const body = document.getElementsByTagName('body')[0];
+    body.appendChild(newDiv);
+  }
+  ReactDOM.render(<HotKeyDialog />, document.getElementById('dialog-container'));
 };
 
 class PlugIn {
   constructor() {
     this.callback = (list) => {
       list.forEach((mutation) => {
-        if (!isChecked && mutation.type === 'childList') {
-          if (screenNode.getElementsByClassName('toolbar_view--buttonGroup--2wM3n')) {
+        if (mutation.type === 'childList' || mutation.type === 'subtree') {
+          if (screenNode.getElementsByClassName('js-fullscreen-prevent-event-capture')) {
             injectApp();
           }
         }
       });
     };
-    this.figma = new Figma();
+    this.figma = window.figmaInstance;
     this.observer = new MutationObserver(this.callback);
     this.startObservation = this.startObservation.bind(this);
     this.stopObservation = this.stopObservation.bind(this);
@@ -43,6 +51,7 @@ class PlugIn {
 
   run() {
     if (!this.observer) return;
+    insertModalPanel();
     this.startObservation();
   }
 
@@ -63,12 +72,14 @@ class PlugIn {
     return this.figma.getSelectedLayer();
   }
 
-  duplicateLayers(r, c, spacing) {
+  duplicateLayers(r, c, hspacing, vspacing) {
     if (!this.figma) return;
-    this.figma.duplicateLayers(r, c, spacing);
+    this.figma.duplicateLayers(r, c, hspacing, vspacing);
   }
 }
 
+const figmaInstance = new Figma();
+window.figmaInstance = figmaInstance;
 const pluginInstance = new PlugIn();
 window.pluginInstance = pluginInstance;
 window.pluginInstance.run();

@@ -51,7 +51,8 @@ export default class RepeatDialog extends React.Component {
     this.state = {
       rows: 1,
       cols: 1,
-      spacing: 10,
+      hspacing: 10,
+      vspacing: 10,
     };
     this.startDuplicate = this.startDuplicate.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
@@ -66,8 +67,11 @@ export default class RepeatDialog extends React.Component {
       case 'rows':
         this.setState({ rows: value });
         break;
-      case 'spacing':
-        this.setState({ spacing: value });
+      case 'hspacing':
+        this.setState({ hspacing: value });
+        break;
+      case 'vspacing':
+        this.setState({ vspacing: value });
         break;
       default:
         break;
@@ -75,8 +79,10 @@ export default class RepeatDialog extends React.Component {
   }
 
   startDuplicate() {
-    const { rows, cols, spacing } = this.state;
-    window.pluginInstance.duplicateLayers(rows, cols, spacing);
+    const {
+      rows, cols, hspacing, vspacing,
+    } = this.state;
+    window.pluginInstance.duplicateLayers(rows, cols, hspacing, vspacing);
     const { onRequestClose } = this.props;
     onRequestClose();
   }
@@ -84,7 +90,7 @@ export default class RepeatDialog extends React.Component {
 
   render() {
     const {
-      rows, cols, spacing,
+      rows, cols, hspacing, vspacing,
     } = this.state;
     const { onRequestClose, isOpen } = this.props;
     return (
@@ -105,8 +111,12 @@ export default class RepeatDialog extends React.Component {
             <input style={inputStyle} type="text" id="rows" value={rows} onChange={this.onValueChange} />
           </li>
           <li style={listStyle}>
-            <span>Spacing: </span>
-            <input style={inputStyle} type="text" id="spacing" value={spacing} onChange={this.onValueChange} />
+            <span>Horizontal Spacing: </span>
+            <input style={inputStyle} type="text" id="hspacing" value={hspacing} onChange={this.onValueChange} />
+          </li>
+          <li style={listStyle}>
+            <span>Vertical Spacing: </span>
+            <input style={inputStyle} type="text" id="vspacing" value={vspacing} onChange={this.onValueChange} />
           </li>
         </ul>
         <div>
